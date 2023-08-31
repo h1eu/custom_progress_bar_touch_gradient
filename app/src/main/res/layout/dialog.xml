@@ -30,62 +30,75 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text1" />
 
-    <LinearLayout
-        android:id="@+id/layout_boost_volume"
-        android:layout_width="match_parent"
+
+    <ImageView
+        android:id="@+id/btn_minus"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_percent_volume"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_percent_volume">
+        android:src="@drawable/ic_minus" />
 
-        <ImageView
-            android:id="@+id/btn_minus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_minus"/>
-        <View
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_weight="1"/>
+    <com.example.custom_progress_bar_boost_volume.CustomProgressBarBoostVolume
+        android:id="@+id/progress_bar"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginHorizontal="4dp"
+        app:layout_constraintTop_toTopOf="@+id/btn_minus"
+        app:layout_constraintStart_toEndOf="@+id/btn_minus"
+        app:layout_constraintEnd_toStartOf="@+id/btn_plus"/>
 
-        <ImageView
-            android:id="@+id/btn_plus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_plus"/>
+    <ImageView
+        android:id="@+id/btn_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/btn_minus"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_plus" />
 
-    </LinearLayout>
+    <com.example.custom_progress_bar_boost_volume.CustomProgressBarController
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:translationY="-4dp"
+        android:layout_marginHorizontal="4dp"
+        app:layout_constraintTop_toTopOf="@+id/btn_minus"
+        app:layout_constraintStart_toEndOf="@+id/btn_minus"
+        app:layout_constraintEnd_toStartOf="@+id/btn_plus" />
+
 
     <LinearLayout
         android:id="@+id/layout_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:orientation="horizontal"
-        android:gravity="end"
         android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="end"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_boost_volume">
+        app:layout_constraintTop_toBottomOf="@+id/progress_bar">
 
         <TextView
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:textSize="12sp"
-            android:padding="15dp"
             android:layout_marginEnd="8dp"
-            android:textColor="#958B8B"/>
+            android:padding="15dp"
+            android:text="Cancel"
+            android:textColor="#958B8B"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/btn_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ok"
-            android:textSize="12sp"
             android:padding="15dp"
-            android:textColor="#FCFCFC"/>
+            android:text="Ok"
+            android:textColor="#FCFCFC"
+            android:textSize="12sp" />
     </LinearLayout>
 
 
