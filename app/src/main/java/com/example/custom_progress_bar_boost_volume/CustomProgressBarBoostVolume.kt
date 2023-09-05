@@ -2,20 +2,16 @@ package com.example.custom_progress_bar_boost_volume
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Shader
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.View
-import androidx.core.content.ContextCompat
 
 class CustomProgressBarBoostVolume(context: Context, attr: AttributeSet) : View(context, attr) {
+    private var widthGradient = 0f
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = MeasureSpec.makeMeasureSpec(widthMeasureSpec, MeasureSpec.EXACTLY)
@@ -57,7 +53,7 @@ class CustomProgressBarBoostVolume(context: Context, attr: AttributeSet) : View(
         canvas?.drawRoundRect(
             0f,
             0f,
-            0f,
+            widthGradient,
             height.toFloat(),
             4f,
             4f,
@@ -65,7 +61,11 @@ class CustomProgressBarBoostVolume(context: Context, attr: AttributeSet) : View(
         )
 
 
+    }
 
+    fun drawGradient(widthGradient: Float){
+        this.widthGradient = widthGradient
+        invalidate()
     }
 
 

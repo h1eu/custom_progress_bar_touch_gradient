@@ -60,6 +60,7 @@
         android:src="@drawable/ic_plus" />
 
     <com.example.custom_progress_bar_boost_volume.CustomProgressBarController
+        android:id="@+id/progress_bar_controller"
         android:layout_width="0dp"
         android:layout_height="32dp"
         android:translationY="-4dp"

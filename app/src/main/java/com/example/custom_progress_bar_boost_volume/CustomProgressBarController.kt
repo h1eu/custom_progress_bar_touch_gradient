@@ -7,59 +7,78 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 
-class CustomProgressBarController(context: Context,attr: AttributeSet): View(context,attr) {
-    private var startX: Float? = null
-    private var offSetX: Float? = null
+class CustomProgressBarController(context: Context, attr: AttributeSet) : View(context, attr) {
+    private var leftController: Int? = null
+    private var rightController: Int? = null
+    var onTouchController: (Float) -> Unit = {}
+    var onProgress: (Float) -> Unit = {}
+    private var viewLeft = 0f
+    private var viewTop = 0F
+    private var viewStart = 0f
+    private var viewDraw = 0f
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = MeasureSpec.makeMeasureSpec(widthMeasureSpec, MeasureSpec.EXACTLY)
         val height = MeasureSpec.makeMeasureSpec(heightMeasureSpec, MeasureSpec.EXACTLY)
         super.onMeasure(width, height)
     }
+
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
         val drawableProgressPoint = ContextCompat.getDrawable(context, R.drawable.ic_progress_bar)
-            ?.let{ drawableToBitmap(it) }
+            ?.let { drawableToBitmap(it) }
 
-        if (drawableProgressPoint != null){
+        if (drawableProgressPoint != null) {
+            leftController = this.left
+            rightController = this.right + this.width - drawableProgressPoint.width
             canvas?.drawBitmap(
                 drawableProgressPoint,
-                0f,0f,
+                viewLeft, viewTop,
                 null
             )
+
+            viewDraw = drawableProgressPoint.width.toFloat()
         }
     }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        val temporaryX = event?.x
-        when(event?.action){
-            MotionEvent.ACTION_DOWN -> {
-                startX = temporaryX
-                offSetX = 0f
-                Log.e("motion", "onTouchEvent: cham xuong", )
-            }
+        when (event?.action) {
             MotionEvent.ACTION_MOVE -> {
-                val dX = temporaryX?.minus(startX!!)
-                dX?.let { offsetLeftAndRight(it.toInt()) }
+                if (event.x > viewStart && event.x < width){
+                    onTouchController(event.x)
+                    onProgress(calculatorOnProgress(event.x))
+                    viewLeft = event.x
+                    invalidate()
+                }
+                else{
+                    if (event.x <= viewStart){
+                        onTouchController(event.x)
+                        onProgress(calculatorOnProgress(viewStart))
+                        viewLeft = viewStart
+                        invalidate()
+                    }
+                    if (event.x >= width){
+                        onTouchController(event.x)
+                        onProgress(calculatorOnProgress(width.toFloat()))
+                        viewLeft = width - viewDraw
+                        invalidate()
+                    }
 
-                if (dX != null) {
-                    offSetX = offSetX?.plus(dX)
                 }
 
-
-                startX = temporaryX
-                Log.e("motion", "onTouchEvent: sau khi di chuyen", )
             }
         }
-
-
         return true
+    }
+
+    private fun calculatorOnProgress(value: Float): Float{
+        return value/width * 100
     }
 
     private fun drawableToBitmap(drawable: Drawable): Bitmap? {
