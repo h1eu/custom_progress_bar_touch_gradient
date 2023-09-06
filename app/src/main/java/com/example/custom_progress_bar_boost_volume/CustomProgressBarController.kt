@@ -7,19 +7,21 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 
 class CustomProgressBarController(context: Context, attr: AttributeSet) : View(context, attr) {
-    private var leftController: Int? = null
-    private var rightController: Int? = null
     var onTouchController: (Float) -> Unit = {}
     var onProgress: (Float) -> Unit = {}
     private var viewLeft = 0f
     private var viewTop = 0F
     private var viewStart = 0f
     private var viewDraw = 0f
+    private val sharedPreferences = context.getSharedPreferences(Constants.SHARED_PRE,Context.MODE_PRIVATE)
+    private val currentBoost = sharedPreferences.getInt(Constants.VALUE_BOOSTER,0)
+    private var isFirstOpen = true
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = MeasureSpec.makeMeasureSpec(widthMeasureSpec, MeasureSpec.EXACTLY)
@@ -34,15 +36,21 @@ class CustomProgressBarController(context: Context, attr: AttributeSet) : View(c
             ?.let { drawableToBitmap(it) }
 
         if (drawableProgressPoint != null) {
-            leftController = this.left
-            rightController = this.right + this.width - drawableProgressPoint.width
+            if (currentBoost != 0 && isFirstOpen){
+                isFirstOpen = false
+                viewLeft = currentBoost.toFloat() * width / 100
+                onTouchController(viewLeft)
+                onProgress(currentBoost.toFloat())
+            }
+
             canvas?.drawBitmap(
                 drawableProgressPoint,
                 viewLeft, viewTop,
                 null
             )
-
             viewDraw = drawableProgressPoint.width.toFloat()
+
+
         }
     }
 

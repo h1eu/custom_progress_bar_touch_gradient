@@ -53,7 +53,7 @@ class CustomProgressBarBoostVolume(context: Context, attr: AttributeSet) : View(
         canvas?.drawRoundRect(
             0f,
             0f,
-            widthGradient,
+            widthGradient + 5f,
             height.toFloat(),
             4f,
             4f,
