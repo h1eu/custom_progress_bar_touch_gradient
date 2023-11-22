@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.custom_progress_bar_boost_volume"
-        minSdk = 24
+        minSdk = 23
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
